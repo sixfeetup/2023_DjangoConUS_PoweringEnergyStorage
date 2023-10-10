@@ -203,15 +203,21 @@ keywords:
 ::: -->
 
 
-<!-- # Build
+# Front-end
 
-## Front-end
+- [NextJS](https://nextjs.org/) with [Ant Design](https://ant.design/)
+- Batteries-included front-end
+- Authentication, protected routes, API access
+- Implementation against OpenAPI specification
+- CSV & PDF exports
+- Reports
 
 ::: notes
-::: -->
-
+:::
 
 # Challenges
+
+## General
 
 - New spreadsheet versions
 - Changes in the formulas
@@ -224,6 +230,15 @@ keywords:
 - People are still working with Excel while app is built
 - Contant change of business requirements is easier doable in Excel than updating code
 :::
+
+
+# Challenges
+
+## UI & UX
+
+- Massive amount of tabular data
+- Very long forms
+- Don’t create a web version of Excel
 
 
 # Conclusion
