@@ -68,6 +68,10 @@ keywords:
 
 ![](images/Excel01.png)
 
+::: notes
+- Lots of tables everywhere
+:::
+
 # Why <ins>NOT</ins> Use Excel
 
 - No scaling
@@ -81,6 +85,9 @@ keywords:
 - The “Which version are you working on?” problem
 - “Versioning” by filename pattern or written as documentation in a sheet
 - Securing business logic (sharing file accidentically with externals)
+- Everyone can change the content of a cell and formula; no permission checks
+- Everyone can see everything
+- No tests for business logic
 :::
 
 # Why Django?
@@ -94,6 +101,13 @@ keywords:
 - Testable
 
 ::: notes
+- Django includes everything to get started fast; also admin UI
+- You can care about data and business logic first
+- It is more than 10 years old
+- Python, high security score
+- Easily extendable with add-ons
+- Horizontal scaling; use Celery for long running tasks, ...
+- Easy to write unit tests
 :::
 
 # Our Stack
@@ -124,6 +138,16 @@ keywords:
 1. Build
 1. Switch
 
+::: notes
+- The optimal stages for transition from Excel to custom app with Django
+
+1. **Evaluate:** Inspect and document every formula, every dependency
+1. **Prototype:** Re-build business logic (formulas) with Python. Use Jupiter notebooks for this
+1. **Review:** Let customer review protoype with real world data
+1. **Build:** Implement the prototype in Django
+1. **Switch**: Replace Excel files with new Django App
+:::
+
 # Transition
 
 ## Evaluate
@@ -134,6 +158,10 @@ keywords:
 - Add spreadsheet version information
 
 ::: notes
+- Top priority: every formula in the spreadsheets needs to be documented
+- Every formula needs valid and invalid examples (to know when to fail)
+- Add information about the spreadsheed version (file version), the cell location, all precedents and dependents
+- When possible link to Jupiter notebook example
 :::
 
 # Transition
@@ -146,7 +174,12 @@ keywords:
 - Let customer test with real data
 - Early feedback
 
+<!-- TODO: Link notebook example -->
+
 ::: notes
+- Can be easily shared and run locally
+- No need to set up full stack to write and test business logic
+- Let customers test with their real data (CSV import) and give early feedback
 :::
 
 # Transition
@@ -186,6 +219,10 @@ keywords:
 - Requirement changes
 
 ::: notes
+- People are constantly updating and optimizing Excel sheets; every new version results in re-evaluation
+- Sometimes (small) changes in formulas without notice
+- People are still working with Excel while app is built
+- Contant change of business requirements is easier doable in Excel than updating code
 :::
 
 
