@@ -31,7 +31,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install Dependencies
-        run: apt-update && apt-get install --no-install-recommends -y libarchive-tools pandoc
+        run: |
+          export DEBIAN_FRONTEND=noninteractive \
+          && apt-get update \
+          && apt-get install --no-install-recommends -y libarchive-tools pandoc
       - name: Build index
         run: make index.html
       - name: Prep site directory
