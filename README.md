@@ -12,8 +12,7 @@ Attribution-ShareAlike 4.0 International License</a>.
 - pandoc
 - bsdtar (part of the `libarchive-tools` package on Ubuntu)
 
-Make sure that your working directory is set up to use the LTS version of node before you begin. Then can just build your
-presentation with `make`.
+Make sure that your working directory is set up to use the LTS version of node before you begin. Then can just build your presentation with `make`.
 
 ```
 $ nvm install --lts

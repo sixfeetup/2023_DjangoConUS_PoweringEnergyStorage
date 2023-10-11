@@ -8,18 +8,22 @@ date: DjangoCon US 2023
 date-meta: 2023
 keywords:
     - Python
-    - Programming
-    - Code
+    - Django
 ---
 
-# Powering Energy Storage Beyond Excel {.semi-filtered data-background-image="images/abstract.jpg"}
+# Powering Energy Storage Beyond Excel {.semi-filtered data-background-image=""}
 #### Calvin Hendryx-Parker, CTO
 #### Six Feet Up
 
-::::::::::::::{.credits}
-<a style="background-color:black;color:white;text-decoration:none;padding:4px 6px;font-family:-apple-system, BlinkMacSystemFont, &quot;San Francisco&quot;, &quot;Helvetica Neue&quot;, Helvetica, Ubuntu, Roboto, Noto, &quot;Segoe UI&quot;, Arial, sans-serif;font-size:12px;font-weight:bold;line-height:1.2;display:inline-block;border-radius:3px" href="https://unsplash.com/@davidclode?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from David Clode"><span style="display:inline-block;padding:2px 3px"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-2px;fill:white" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path></svg></span><span style="display:inline-block;padding:2px 3px">David Clode</span></a>
-::::::::::::::
+::: notes
+Quick intro and that we will be showing a case study, but will have a live demo
+:::
 
+# GitHub Repository
+
+<https://github.com/sixfeetup/2023_DjangoConUS_PoweringEnergyStorage>
+
+![qr code to github repository](images/qrcode_github.com.png)
 
 # Energy Storage Projects
 
@@ -30,7 +34,6 @@ keywords:
 - Configuration
 - Build
 - Maintain
-
 
 ::: notes
 - Every project is a multi step process
@@ -44,12 +47,12 @@ keywords:
 # Why Excel in First Place
 
 - Widely known
-- Easy to start with
+- Easy to bootstrap
 - Easy to adjust to business case
 - Easy collaboration and sharing
 - Handling of massive tabular data
 - Handle complex formulas and business logic
-- High precission calculations
+- High precision calculations
 
 ::: notes
 - Brief background on why Excel is used so much in first place
@@ -84,7 +87,7 @@ keywords:
 ::: notes
 - The “Which version are you working on?” problem
 - “Versioning” by filename pattern or written as documentation in a sheet
-- Securing business logic (sharing file accidentically with externals)
+- Securing business logic (sharing file accidentally with externals)
 - Everyone can change the content of a cell and formula; no permission checks
 - Everyone can see everything
 - No tests for business logic
@@ -133,19 +136,19 @@ keywords:
 # Transition
 
 1. Evaluate
-1. Prototype
-1. Review
-1. Build
-1. Switch
+2. Prototype
+3. Review
+4. Build
+5. Switch
 
 ::: notes
 - The optimal stages for transition from Excel to custom app with Django
 
 1. **Evaluate:** Inspect and document every formula, every dependency
-1. **Prototype:** Re-build business logic (formulas) with Python. Use Jupiter notebooks for this
-1. **Review:** Let customer review protoype with real world data
-1. **Build:** Implement the prototype in Django
-1. **Switch**: Replace Excel files with new Django App
+2. **Prototype:** Re-build business logic (formulas) with Python. Use Jupiter notebooks for this
+3. **Review:** Let customer review prototype with real world data
+4. **Build:** Implement the prototype in Django
+5. **Switch**: Replace Excel files with new Django App
 :::
 
 # Transition
@@ -160,7 +163,7 @@ keywords:
 ::: notes
 - Top priority: every formula in the spreadsheets needs to be documented
 - Every formula needs valid and invalid examples (to know when to fail)
-- Add information about the spreadsheed version (file version), the cell location, all precedents and dependents
+- Add information about the spreadsheet version (file version), the cell location, all precedents and dependents
 - When possible link to Jupiter notebook example
 :::
 
@@ -190,18 +193,10 @@ keywords:
 - [https://github.com/sixfeetup/cookiecutter-sixiedjango](https://github.com/sixfeetup/cookiecutter-sixiedjango)
 - Terraform and AWS
 - Local K8S development
-- Fast developement, easy deployment
+- Fast development, easy deployment
 
 ::: notes
 :::
-
-<!-- # Build
-
-## Backend
-
-::: notes
-::: -->
-
 
 # Front-end
 
@@ -228,7 +223,7 @@ keywords:
 - People are constantly updating and optimizing Excel sheets; every new version results in re-evaluation
 - Sometimes (small) changes in formulas without notice
 - People are still working with Excel while app is built
-- Contant change of business requirements is easier doable in Excel than updating code
+- Constant change of business requirements is easier doable in Excel than updating code
 :::
 
 
@@ -255,10 +250,12 @@ keywords:
 ## Resources
 
 * Six Feet Up Blog Post -- [How to Break Free from Excel](https://www.sixfeetup.com/blog/how-to-break-free-from-excel)
+* <https://github.com/sixfeetup/2023_DjangoConUS_PoweringEnergyStorage>
 
 ## Find Me 😍
 
-#### <calvin@sixfeetup.com>
-
-🐘 [`@calvinhp@fosstodon.org`](https://fosstodon.org/@calvinhp)  
-🐦 [`@calvinhp`](https://twitter.com/calvinhp)
+📩 <calvin@sixfeetup.com>  
+🤝 <https://linkedin.com/in/calvinhp>  
+✖️ [@calvinhp](https://x.com/calvinhp)  
+🐘 [@calvinhp@fosstodon.org](https://fosstodon.org/@calvinhp)  
+✍️ <https://sixfeetup.com/blog>
