@@ -101,7 +101,7 @@ section.has-dark-background {
 }
 
 body:after {
-  content: url(images/logo.png);
+  content: url(../../images/logo.png);
   transform: scale(.1);
   position: fixed;
   bottom: -17em;
