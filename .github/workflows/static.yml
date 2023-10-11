@@ -43,8 +43,10 @@ jobs:
       - name: Prep site directory
         run: |
           mkdir _site
+          mv images/ _site/
           mv index.html _site/
-          mv dist/ _site/ 
+          mv dist/ _site/
+          mv plugin/ _site/
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
