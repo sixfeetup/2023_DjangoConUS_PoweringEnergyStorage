@@ -33,8 +33,8 @@ jobs:
       - name: Install Dependencies
         run: |
           export DEBIAN_FRONTEND=noninteractive \
-          && apt-get update \
-          && apt-get install --no-install-recommends -y libarchive-tools pandoc
+          && sudo -E apt-get update \
+          && sudo -E apt-get install --no-install-recommends -y libarchive-tools pandoc
       - name: Build index
         run: make index.html
       - name: Prep site directory
