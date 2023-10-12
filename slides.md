@@ -85,6 +85,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 - No tests
 
 ::: notes
+- Scaling: Use Excel for a handful of projects, but not for thousands of customers and projects (where each project is a separate Excel file)
 - The “Which version are you working on?” problem
 - “Versioning” by filename pattern or written as documentation in a sheet
 - Securing business logic (sharing file accidentally with externals)
@@ -208,6 +209,25 @@ Quick intro and that we will be showing a case study, but will have a live demo
 - Reports
 
 ::: notes
+- NextJS:
+  - Most popular React Framework
+  - Support for client and server side rendering
+  - Support for dynamic HTML streaming
+  - File system routing
+  - Supports server and client side data fetching
+  - We can build internal api endpoints to securly connect to 3rd party APIs
+- Ant Design
+  - Is a React Component Library
+  - Provides a set of common UI components we use on a regular base
+  - Easy customization and theming
+- OpenAPI:
+  - We use the auto-generated OpenAPI docs from `drf_spectacular`
+  - Even if backend implementation is not yet complete, API is already specified with all request and response params, and has examples (also for failed requests)
+  - Allows building the frontend faster
+- Exports
+  - PDF exports for internal archive, or to give it to customers
+  - CSV exports for parallel usage of web app and other Excel files in the process until migration complete
+- NextJS and Ant Design allow us to create reports and charts with ease, for example the augmentation table and degradation graph
 :::
 
 # Challenges
