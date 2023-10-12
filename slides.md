@@ -11,7 +11,7 @@ keywords:
     - Django
 ---
 
-# Powering Energy Storage Beyond Excel {.semi-filtered data-background-image="images/storage01.png"}
+# Powering Energy Storage Beyond Excel {.r-fit-text .semi-filtered data-background-image="images/storage01.png"}
 #### Calvin Hendryx-Parker, CTO
 #### Six Feet Up
 
@@ -21,9 +21,9 @@ Quick intro and that we will be showing a case study, but will have a live demo
 
 # GitHub Repository
 
-<https://github.com/sixfeetup/2023_DjangoConUS_PoweringEnergyStorage>
+<https://github.com/sixfeetup/2023_DjangoConUS_PoweringEnergyStorage>{.r-fit-text}
 
-![qr code to github repository](images/qrcode_github.com.png)
+![](images/qrcode_github.com.png)
 
 # Energy Storage Projects {.semi-filtered data-background-image="images/sungrow-emea-itv-MC5S6cU-unsplash.jpg"}
 
@@ -94,7 +94,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 - No tests for business logic
 :::
 
-# Why Django? {.semi-filtered data-background-image="images/battery01.png"}
+# Why Django? {.filtered data-background-image="images/battery01.png"}
 
 - Batteries Included
 - Mature
@@ -146,7 +146,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 - The optimal stages for transition from Excel to custom app with Django
 
 1. **Evaluate:** Inspect and document every formula, every dependency
-2. **Prototype:** Re-build business logic (formulas) with Python. Use Jupiter notebooks for this
+2. **Prototype:** Re-build business logic (formulas) with Python. Use Jupyter notebooks for this
 3. **Review:** Let customer review prototype with real world data
 4. **Build:** Implement the prototype in Django
 5. **Switch**: Replace Excel files with new Django App
@@ -165,14 +165,14 @@ Quick intro and that we will be showing a case study, but will have a live demo
 - Top priority: every formula in the spreadsheets needs to be documented
 - Every formula needs valid and invalid examples (to know when to fail)
 - Add information about the spreadsheet version (file version), the cell location, all precedents and dependents
-- When possible link to Jupiter notebook example
+- When possible link to Jupyter notebook example
 :::
 
 # Transition {.semi-filtered data-background-image="images/nasa-Q1p7bh3SHj8-unsplash.jpg"}
 
 ## Prototype
 
-- Using Jupiter Notebooks
+- Using Jupyter Notebooks
 - Rapid development
 - No full stack required
 - Let customer test with real data
