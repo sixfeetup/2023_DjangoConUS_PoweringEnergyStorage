@@ -11,7 +11,7 @@ keywords:
     - Django
 ---
 
-# Powering Energy Storage Beyond Excel {.semi-filtered data-background-image=""}
+# Powering Energy Storage Beyond Excel {.semi-filtered data-background-image="images/storage01.png"}
 #### Calvin Hendryx-Parker, CTO
 #### Six Feet Up
 
@@ -25,7 +25,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 
 ![qr code to github repository](images/qrcode_github.com.png)
 
-# Energy Storage Projects
+# Energy Storage Projects {.semi-filtered data-background-image="images/sungrow-emea-itv-MC5S6cU-unsplash.jpg"}
 
 ## Stages
 
@@ -44,7 +44,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 - Don’t add too much hardware upfront; too expensive
 :::
 
-# Why Excel in First Place
+# Why Excel in First Place {.semi-filtered data-background-image="images/solar01.png"}
 
 - Widely known
 - Easy to bootstrap
@@ -75,7 +75,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 - Lots of tables everywhere
 :::
 
-# Why <ins>NOT</ins> Use Excel
+# Why <ins>NOT</ins> Use Excel {.semi-filtered data-background-image="images/dan-meyers-w6X7XaolqA0-unsplash.jpg"}
 
 - No scaling
 - No reliable versioning
@@ -94,7 +94,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 - No tests for business logic
 :::
 
-# Why Django?
+# Why Django? {.semi-filtered data-background-image="images/battery01.png"}
 
 - Batteries Included
 - Mature
@@ -114,7 +114,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 - Easy to write unit tests
 :::
 
-# Our Stack
+# Our Stack {.semi-filtered data-background-image="images/wind02.png"}
 
 - Django backend
 - PostgreSQL database
@@ -134,7 +134,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 :::
 
 
-# Transition
+# Transition {.semi-filtered data-background-image="images/storage02.png"}
 
 1. Evaluate
 2. Prototype
@@ -152,7 +152,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 5. **Switch**: Replace Excel files with new Django App
 :::
 
-# Transition
+# Transition {.semi-filtered data-background-image="images/wind03.png"}
 
 ## Evaluate
 
@@ -168,7 +168,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 - When possible link to Jupiter notebook example
 :::
 
-# Transition
+# Transition {.semi-filtered data-background-image="images/nasa-Q1p7bh3SHj8-unsplash.jpg"}
 
 ## Prototype
 
@@ -186,7 +186,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 - Let customers test with their real data (CSV import) and give early feedback
 :::
 
-# Transition
+# Transition {.semi-filtered data-background-image="images/solar02.png"}
 
 ## Build
 
@@ -199,7 +199,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 ::: notes
 :::
 
-# Front-end
+# Front-end {.semi-filtered data-background-image="images/battery02.png"}
 
 - [NextJS](https://nextjs.org/) with [Ant Design](https://ant.design/)
 - Batteries-included front-end
@@ -230,7 +230,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 - NextJS and Ant Design allow us to create reports and charts with ease, for example the augmentation table and degradation graph
 :::
 
-# Challenges
+# Challenges {.semi-filtered data-background-image="images/american-public-power-association-dR3Fb6dBEc0-unsplash.jpg"}
 
 ## General
 
@@ -247,7 +247,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 :::
 
 
-# Challenges
+# Challenges {.semi-filtered data-background-image="images/wind01.png"}
 
 ## UI & UX
 
@@ -256,7 +256,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 - Don’t create a web version of Excel
 
 
-# Conclusion
+# Conclusion {.semi-filtered data-background-image="images/solar03.png"}
 
 - Use Django from beginning if you can
 - Use Excel if you have to
@@ -265,7 +265,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 ::: notes
 :::
 
-# Wrap up and Questions {.semi-filtered data-background-image="images/justin-casey-7B0D1zO3PoQ-unsplash.jpg"}
+# Wrap up and Questions
 
 ## Resources
 
