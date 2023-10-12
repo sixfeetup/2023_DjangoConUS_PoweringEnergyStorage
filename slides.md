@@ -265,7 +265,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 ::: notes
 :::
 
-# Wrap up and Questions
+# Wrap up and Questions {.semi-filtered data-background-image="images/justin-casey-7B0D1zO3PoQ-unsplash.jpg"}
 
 ## Resources
 
