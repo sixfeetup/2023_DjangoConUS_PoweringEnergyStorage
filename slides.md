@@ -69,7 +69,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 
 # Tables...
 
-![](images/Excel01.png)
+![](images/Excel01.png){.r-stretch}
 
 ::: notes
 - Lots of tables everywhere
