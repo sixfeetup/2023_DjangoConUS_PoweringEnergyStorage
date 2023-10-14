@@ -1,1 +1,4 @@
 Django
+django-json-widget
+openpyxl
+pandas
