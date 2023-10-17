@@ -4,8 +4,7 @@ from django.db import models
 from django.core.serializers.json import DjangoJSONEncoder
 
 
-def convert_to_dict(data_str):
-    data = json.loads(data_str)
+def convert_to_dict(data):
     return {int(index): D(value) for index, value in enumerate(data, start=1)}
 
 
@@ -39,10 +38,12 @@ class ConstantData(models.Model):
 
 class OutputDataTabel(models.Model):
     data = models.ForeignKey(ConstantData, on_delete=models.CASCADE)
-    output_soh_delta = models.JSONField(default=dict, null=True, blank=True)
+    output_soh_delta = models.JSONField(default=dict, null=True, blank=True, encoder=DjangoJSONEncoder)
 
     def __str__(self):
         return f"Output for data id: {self.data.id}"
+
+
 
     @classmethod
     def generate_output(cls, queryset):
@@ -55,9 +56,17 @@ class OutputDataTabel(models.Model):
             )
             performance_table.initialize_phases()
 
+            output_data = performance_table.project_performance_decay_with_performance_grid_matrix_delta
+            output_soh_delta = [
+                {
+                    "year": year,
+                    "value": value
+                }
+                for year, value in output_data.items()
+            ]
             OutputDataTabel.objects.create(
                 data=constant_data,
-                output_soh_delta=json.dumps(performance_table.project_performance_decay_with_performance_grid_matrix_delta, cls=DjangoJSONEncoder)
+                output_soh_delta=output_soh_delta
             )
 
 class Phase:

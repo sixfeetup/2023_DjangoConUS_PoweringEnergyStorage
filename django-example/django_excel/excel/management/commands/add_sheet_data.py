@@ -21,7 +21,7 @@ class Command(BaseCommand):
         """
         Convert pandas series to list of data.
         """
-        return json.dumps(data_property.tolist())
+        return data_property.tolist()
 
     def get_constant_data_for_project(self, sheet_name, columns, skiprows, total_rows):
         """
@@ -72,8 +72,15 @@ class Command(BaseCommand):
         skiprows = 50
         total_rows = 40
         output_data_array = self.get_constant_data_for_project(sheet_name, columns, skiprows, total_rows)
-        output_data = self.convert_data_type(output_data_array["Performance Decay with Performance Grid Matrix vs. Initial State of Health (ISOH) Delta"])
+        data_list = self.convert_data_type(output_data_array["Performance Decay with Performance Grid Matrix vs. Initial State of Health (ISOH) Delta"])
 
+        output_data = [
+                {
+                    "year": year,
+                    "value": value
+                }
+                for year, value in enumerate(data_list, start=1)
+            ]
         ConstantData.objects.create(
             annual_operating_cycles=annual_operating_cycles,
             duration_of_project=duration_of_project,
