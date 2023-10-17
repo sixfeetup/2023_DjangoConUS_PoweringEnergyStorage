@@ -40,7 +40,7 @@ Quick intro and that we will be showing a case study, but will have a live demo
 - Usually calculation for 20 to 25 years lifecycle
 - Calculate required hardware components to fulfill contract
 - Predict system degradation over defined period of time
-- Calculate tranches; new hardware that needs to be added at a particular point in time to keep system above minimum requirements
+- Calculate Phases; new hardware that needs to be added at a particular point in time to keep system above minimum requirements
 - Don’t add too much hardware upfront; too expensive
 :::
 

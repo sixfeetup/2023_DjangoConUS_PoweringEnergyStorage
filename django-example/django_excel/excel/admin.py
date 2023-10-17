@@ -11,8 +11,8 @@ from excel.models import ConstantData, OutputDataTabel
 
 @admin.register(ConstantData)
 class ConstantDataAdmin(admin.ModelAdmin):
-    list_display = ["__str__" ,"project_cycles_per_year", "project_term", "constant_throughput", "project_ecap", "project_min_e_capacity", "project_e_losses"]
-    list_filter = ["project_cycles_per_year", "project_term"]
+    list_display = ["__str__" ,"annual_operating_cycles", "duration_of_project", "steady_output", "electrical_capacity", "minimum_capacity", "losses"]
+    list_filter = ["annual_operating_cycles", "duration_of_project"]
     actions = ["generate_results"]
     formfield_overrides = {
         JSONField: {'widget': JSONEditorWidget},
