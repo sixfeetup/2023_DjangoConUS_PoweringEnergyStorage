@@ -4,31 +4,30 @@ from django.db import models
 from django.core.serializers.json import DjangoJSONEncoder
 
 
-def convert_to_dict(data_str):
-    data = json.loads(data_str)
-    return {int(key): D(value) for key, value in data.items()}
+def convert_to_dict(data):
+    return {int(index): D(value) for index, value in enumerate(data, start=1)}
 
 
 class ConstantData(models.Model):
     # Constants
-    project_cycles_per_year = models.IntegerField(null=True, blank=True)
-    project_term = models.IntegerField(null=True, blank=True)
-    constant_throughput = models.BooleanField(null=True, blank=True)
-    project_ecap = models.IntegerField(null=True, blank=True)
-    project_min_e_capacity = models.IntegerField(null=True, blank=True)
-    project_e_losses = models.IntegerField(null=True, blank=True)
+    annual_operating_cycles = models.IntegerField(null=True, blank=True)
+    duration_of_project = models.IntegerField(null=True, blank=True)
+    steady_output = models.BooleanField(null=True, blank=True)
+    electrical_capacity = models.IntegerField(null=True, blank=True)
+    minimum_capacity = models.IntegerField(null=True, blank=True)
+    losses = models.DecimalField(null=True, blank=True, decimal_places=2, max_digits=9)
 
     # Column Constant Values
-    degradation_curve = models.JSONField(default=dict, null=True, blank=True)
-    incremental_tranche_dc_output = models.JSONField(default=dict, null=True, blank=True)
-    degradation_curve_tranche_gt_1 = models.JSONField(default=dict, null=True, blank=True)
-    incremental_project_dc_output = models.JSONField(default=dict, null=True, blank=True)
-    degradation_with_pg_matrix = models.JSONField(default=dict, null=True, blank=True)
+    performance_deterioration_profile = models.JSONField(default=list, null=True, blank=True)
+    stepwise_direct_current_generation_increase = models.JSONField(default=list, null=True, blank=True)
+    deterioration_curve_for_phase_greater_than1 = models.JSONField(default=list, null=True, blank=True)
+    progressive_project_direct_current_generation = models.JSONField(default=list, null=True, blank=True)
+    performance_decay_with_performance_grid_matrix = models.JSONField(default=list, null=True, blank=True)
 
     # Other Sheets Data
-    energy_capacity_before_losses = models.JSONField(default=list, null=True, blank=True)
-    tranche1_data = models.JSONField(default=list, null=True, blank=True)
-    tranche2_data = models.JSONField(default=list, null=True, blank=True)
+    initial_energy = models.JSONField(default=list, null=True, blank=True)
+    phase1_data = models.JSONField(default=list, null=True, blank=True)
+    phase2_data = models.JSONField(default=list, null=True, blank=True)
 
     # Result
     result = models.JSONField(default=list, null=True, blank=True)
@@ -39,141 +38,150 @@ class ConstantData(models.Model):
 
 class OutputDataTabel(models.Model):
     data = models.ForeignKey(ConstantData, on_delete=models.CASCADE)
-    output_soh_delta = models.JSONField(default=dict, null=True, blank=True)
+    output_soh_delta = models.JSONField(default=dict, null=True, blank=True, encoder=DjangoJSONEncoder)
 
     def __str__(self):
         return f"Output for data id: {self.data.id}"
 
+
+
     @classmethod
     def generate_output(cls, queryset):
         for constant_data in queryset:
-            pg_table = PgTableProject(
-                degradation_with_pg_matrix=convert_to_dict(constant_data.degradation_with_pg_matrix),
-                incremental_tranche_dc_output=convert_to_dict(constant_data.incremental_tranche_dc_output),
-                degradation_curve=convert_to_dict(constant_data.degradation_curve),
-                degradation_curve_tranche_gt_1=convert_to_dict(constant_data.degradation_curve_tranche_gt_1),
+            performance_table = PerformanceTableProject(
+                performance_decay_with_performance_grid_matrix=convert_to_dict(constant_data.performance_decay_with_performance_grid_matrix),
+                progressive_project_direct_current_generation=convert_to_dict(constant_data.progressive_project_direct_current_generation),
+                performance_deterioration_profile=convert_to_dict(constant_data.performance_deterioration_profile),
+                deterioration_curve_for_phase_greater_than1=convert_to_dict(constant_data.deterioration_curve_for_phase_greater_than1),
             )
-            pg_table.initialize_tranches()
+            performance_table.initialize_phases()
 
+            output_data = performance_table.project_performance_decay_with_performance_grid_matrix_delta
+            output_soh_delta = [
+                {
+                    "year": year,
+                    "value": value
+                }
+                for year, value in output_data.items()
+            ]
             OutputDataTabel.objects.create(
                 data=constant_data,
-                output_soh_delta=json.dumps(pg_table.project_pg_matrix_hard_input_soh_delta, cls=DjangoJSONEncoder)
+                output_soh_delta=output_soh_delta
             )
 
-class Tranche:
-    """Calculate PG Table Tranche formulas for the project."""
+class Phase:
+    """Calculate Performance Table Phase formulas for the project."""
 
     def __init__(
             self, 
             pg_table_project,
-            tranche_info,
+            phase_info,
         ):
         """Constructor"""
-        self.tranche_info = tranche_info
+        self.phase_info = phase_info
         self.years = [year for year in range(1, 41)]
         self.pg_table_project = pg_table_project
 
 
     @property
-    def incremental_tranche_dc_output(self):
+    def incremental_phase_dc_generation(self):
         """
-        Incremental Tranche DC  Output (MWhDC Out)
-        =IF(E98<2, 0, IFERROR(I53*(Augmentation!L10/Augmentation!$J10),0))
+        Incremental Phase DC  Generation (MWhDC Out)
         """
-        return self.incremental_tranche_dc_output
+        return self.incremental_phase_dc_generation
 
     @property
-    def aggregate_tranche_dc_output(self):
+    def total_phase_dc_generation(self):
         """
-        Aggregate Tranche DC  Output (MWhDC Out)
+        Total Phase Dc Generation (MWhDC Out)
         =SUM(Hn:H$n)
         """
         # n is a natural number
-        incremental_tranche_dc_output = self.incremental_tranche_dc_output
-        result = {1: 0, 2: incremental_tranche_dc_output[2]}
+        incremental_phase_dc_generation = self.incremental_phase_dc_generation
+        result = {1: 0, 2: incremental_phase_dc_generation[2]}
         for year in self.years[2:]:
             result[year] = sum(
-                [incremental_tranche_dc_output[prev_year] for prev_year in result]
-                + [incremental_tranche_dc_output[year]]
+                [incremental_phase_dc_generation[prev_year] for prev_year in result]
+                + [incremental_phase_dc_generation[year]]
             )
         return result
 
     @property
-    def tranche_years(self):
+    def phase_years(self):
         """
         Total Years for a project
         """
         return self.years
 
     @property
-    def degradation_with_pg_matrix(self):
+    def performance_decay_with_performance_grid_matrix(self):
         """
         A constant value throughout the project
         """
-        return self.pg_table_project.degradation_with_pg_matrix
+        return self.pg_table_project.performance_decay_with_performance_grid_matrix
 
     @property
-    def pg_matrix_hard_input_soh_delta(self):
+    def performance_decay_with_performance_grid_matrix_delta(self):
         """
-        Deg w/ PG Matrix vs HARD INPUT SOH Delta
+        Performance Decay With Performance Grid Matrix Delta
         """
-        tranche_degradation_with_pg_matrix_prev = (
-            self.pg_table_project.degradation_curve
-            if self.tranche_info == 1
-            else self.pg_table_project.degradation_curve_tranche_gt_1
+        phase_degradation_with_deterioration_profile = (
+            self.pg_table_project.performance_deterioration_profile
+            if self.phase_info == 1
+            else self.pg_table_project.deterioration_curve_for_phase_greater_than1
         )
-        degradation_with_pg_matrix = self.pg_table_project.degradation_with_pg_matrix
+        performance_decay_with_performance_grid_matrix = self.pg_table_project.performance_decay_with_performance_grid_matrix
         result = {}
         for year in self.years:
             result[year] = abs(
-                round(degradation_with_pg_matrix[year], 6)
-                - round(D(tranche_degradation_with_pg_matrix_prev[year]), 6)
+                performance_decay_with_performance_grid_matrix[year]
+                - D(phase_degradation_with_deterioration_profile[year])
             )
         return result
     
 
-class PgTableProject:
-    """PG sheet project table formulas"""
+class PerformanceTableProject:
+    """Performance Table formulas"""
 
-    tranche_1 = None
-    tranche_2 = None
+    phase_1 = None
+    phase_2 = None
 
     def __init__(
             self, 
-            degradation_with_pg_matrix, 
-            incremental_tranche_dc_output,
-            degradation_curve,
-            degradation_curve_tranche_gt_1,
+            performance_decay_with_performance_grid_matrix, 
+            progressive_project_direct_current_generation,
+            performance_deterioration_profile,
+            deterioration_curve_for_phase_greater_than1,
         ):
         self.years = [year for year in range(1, 41)]
-        self.degradation_with_pg_matrix = degradation_with_pg_matrix
-        self.incremental_tranche_dc_output = incremental_tranche_dc_output
-        self.degradation_curve = degradation_curve
-        self.degradation_curve_tranche_gt_1 = degradation_curve_tranche_gt_1
+        self.performance_decay_with_performance_grid_matrix = performance_decay_with_performance_grid_matrix
+        self.progressive_project_direct_current_generation = progressive_project_direct_current_generation
+        self.performance_deterioration_profile = performance_deterioration_profile
+        self.deterioration_curve_for_phase_greater_than1 = deterioration_curve_for_phase_greater_than1
 
-    def initialize_tranches(self):
-        for tranche in [tranche for tranche in range(1, 3)]:
+    def initialize_phases(self):
+        for phase in [phase for phase in range(1, 3)]:
             setattr(
                 self, 
-                f"tranche_{tranche}", 
-                Tranche(
-                    tranche_info=tranche,
+                f"phase_{phase}", 
+                Phase(
+                    phase_info=phase,
                     pg_table_project=self
                 ),
             )
 
     @property
-    def project_pg_matrix_hard_input_soh_delta(self):
-        """Calculate Deg w/ PG Matrix vs HARD INPUT SOH Delta"""
-        tranche_deg_pg_matrix = {}
-        for tranche in [tranche for tranche in range(1, 3)]:
-            tranche_obj = getattr(self, f"tranche_{tranche}")
-            tranche_deg_pg_matrix[tranche] = tranche_obj.pg_matrix_hard_input_soh_delta
+    def project_performance_decay_with_performance_grid_matrix_delta(self):
+        """Project Performance Decay With Performance Grid Matrix Delta"""
+        phase_deg_pg_matrix = {}
+        for phase in [phase for phase in range(1, 3)]:
+            phase_obj = getattr(self, f"phase_{phase}")
+            phase_deg_pg_matrix[phase] = phase_obj.performance_decay_with_performance_grid_matrix_delta
 
         result = {}
         for year in self.years:
             result[year] = max(
-                [tranche_deg_pg_matrix[tranche][year] for tranche in [tranche for tranche in range(1, 3)]]
+                [phase_deg_pg_matrix[phase][year] for phase in [phase for phase in range(1, 3)]]
             )
 
         return result

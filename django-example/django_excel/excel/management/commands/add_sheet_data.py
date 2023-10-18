@@ -19,15 +19,9 @@ class Command(BaseCommand):
 
     def convert_data_type(self, data_property):
         """
-        Convert list of data into a dictionary, where keys
-        represent the years and values represent the values
-        against that year. 
+        Convert pandas series to list of data.
         """
-        output = {
-            index: value
-                for index, value in enumerate(data_property, start=1)
-        }
-        return json.dumps(output)
+        return data_property.tolist()
 
     def get_constant_data_for_project(self, sheet_name, columns, skiprows, total_rows):
         """
@@ -44,21 +38,21 @@ class Command(BaseCommand):
         total_rows = 40
 
         sheet_data = self.get_constant_data_for_project(sheet_name, columns, skiprows, total_rows)
-        DEGRADATION_CURVE =  self.convert_data_type(sheet_data["DEGRADATION_CURVE"])
-        INCREMENTAL_TRANCHE_DC_OUTPUT = self.convert_data_type(sheet_data["INCREMENTAL_TRANCHE_DC_OUTPUT"])
-        DEGRADATION_CURVE_TRANCHE_GT_1 = self.convert_data_type(sheet_data["DEGRADATION_CURVE_TRANCHE_GT_1"])
-        INCREMENTAL_PROJECT_DC_OUTPUT = self.convert_data_type(sheet_data["INCREMENTAL_PROJECT_DC_OUTPUT"])
-        DEGRADATION_WITH_PG_MATRIX = self.convert_data_type(sheet_data["DEGRADATION_WITH_PG_MATRIX"])
 
+        PERFORMANCE_DETERIORATION_PROFILE =  self.convert_data_type(sheet_data["Performance Deterioration Profile"])
+        STEPWISE_DIRECT_CURRENT_GENERATION_INCREASE = self.convert_data_type(sheet_data["Stepwise Direct Current Generation Increase"])
+        DETERIORATION_CURVE_FOR_PHASE_GREATER_THAN1 = self.convert_data_type(sheet_data["Deterioration Curve for Phase Greater Than 1"])
+        PROGRESSIVE_PROJECT_DIRECT_CURRENT_GENERATION = self.convert_data_type(sheet_data["Progressive Project Direct Current Generation"])
+        PERFORMANCE_DECAY_WITH_PERFORMANCE_GRID_MATRIX = self.convert_data_type(sheet_data["Performance Decay with Performance Grid Matrix"])
         # Read Input Columns Data
-        columns = "T:v"
+        columns = "T:V"
         skiprows = 95
         total_rows = 40
 
         input_columns_data_array = self.get_constant_data_for_project(sheet_name, columns, skiprows, total_rows)
-        energy_capacity_before_losses = self.convert_data_type(input_columns_data_array["Energy Capacity before Losses (MWh)"])
-        tranche1_data = self.convert_data_type(input_columns_data_array["Tranche 1 Data"])
-        tranche2_data = self.convert_data_type(input_columns_data_array["Tranche 2 Data"])
+        initial_energy = self.convert_data_type(input_columns_data_array["Initial Energy (MWh)"])
+        phase1_data = self.convert_data_type(input_columns_data_array["Phase 1 Data"])
+        phase2_data = self.convert_data_type(input_columns_data_array["Phase 2 Data"])
 
         # Read Constant Data
         columns = "P:Q"
@@ -66,35 +60,42 @@ class Command(BaseCommand):
         total_rows = 6
 
         constant_data = self.get_constant_data_for_project(sheet_name, columns, skiprows, total_rows)
-        project_cycles_per_year = constant_data.iloc[0, 1]
-        project_term = constant_data.iloc[1, 1]
-        constant_throughput = True if constant_data.iloc[2, 1]=="Yes" else False 
-        project_ecap = constant_data.iloc[3, 1]
-        project_min_e_capacity = constant_data.iloc[4, 1]
-        project_e_losses = constant_data.iloc[5, 1]
+        annual_operating_cycles = constant_data.iloc[0, 1]
+        duration_of_project = constant_data.iloc[1, 1]
+        steady_output = True if constant_data.iloc[2, 1]=="Yes" else False 
+        electrical_capacity = constant_data.iloc[3, 1]
+        minimum_capacity = constant_data.iloc[4, 1]
+        losses = constant_data.iloc[5, 1]
 
         # Read Output Data
         columns = "M"
         skiprows = 50
         total_rows = 40
         output_data_array = self.get_constant_data_for_project(sheet_name, columns, skiprows, total_rows)
-        output_data = self.convert_data_type(output_data_array["Deg w/ PG Matrix vs HARD INPUT SOH Delta"])
+        data_list = self.convert_data_type(output_data_array["Performance Decay with Performance Grid Matrix vs. Initial State of Health (ISOH) Delta"])
 
+        output_data = [
+                {
+                    "year": year,
+                    "value": value
+                }
+                for year, value in enumerate(data_list, start=1)
+            ]
         ConstantData.objects.create(
-            project_cycles_per_year=project_cycles_per_year,
-            project_term=project_term,
-            constant_throughput=constant_throughput,
-            project_ecap=project_ecap,
-            project_min_e_capacity=project_min_e_capacity,
-            project_e_losses=project_e_losses,
-            degradation_curve=DEGRADATION_CURVE,
-            incremental_tranche_dc_output=INCREMENTAL_TRANCHE_DC_OUTPUT,
-            degradation_curve_tranche_gt_1=DEGRADATION_CURVE_TRANCHE_GT_1,
-            incremental_project_dc_output=INCREMENTAL_PROJECT_DC_OUTPUT,
-            degradation_with_pg_matrix=DEGRADATION_WITH_PG_MATRIX,
-            energy_capacity_before_losses=energy_capacity_before_losses,
-            tranche1_data=tranche1_data,
-            tranche2_data=tranche2_data,
+            annual_operating_cycles=annual_operating_cycles,
+            duration_of_project=duration_of_project,
+            steady_output=steady_output,
+            electrical_capacity=electrical_capacity,
+            minimum_capacity=minimum_capacity,
+            losses=losses,
+            performance_deterioration_profile=PERFORMANCE_DETERIORATION_PROFILE,
+            stepwise_direct_current_generation_increase=STEPWISE_DIRECT_CURRENT_GENERATION_INCREASE,
+            deterioration_curve_for_phase_greater_than1=DETERIORATION_CURVE_FOR_PHASE_GREATER_THAN1,
+            progressive_project_direct_current_generation=PROGRESSIVE_PROJECT_DIRECT_CURRENT_GENERATION,
+            performance_decay_with_performance_grid_matrix=PERFORMANCE_DECAY_WITH_PERFORMANCE_GRID_MATRIX,
+            initial_energy=initial_energy,
+            phase1_data=phase1_data,
+            phase2_data=phase2_data,
             result=output_data,
         )
         return "True"
